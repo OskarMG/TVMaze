@@ -31,7 +31,7 @@ struct DashboardView<ViewModel>: View where ViewModel: DashboardViewModelProtoco
     }
     
     private func setupRowFor(_ show: TVShow) -> some View {
-        Button(action: {}) {
+        Button(action: { viewModel.onTvShowTap(show) }) {
             HStack(spacing: .padding16) {
                 PosterView(
                     url: show.image?.medium,

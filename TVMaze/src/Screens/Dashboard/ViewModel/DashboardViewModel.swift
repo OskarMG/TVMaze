@@ -13,6 +13,7 @@ final class DashboardViewModel: DashboardViewModelProtocol {
     @Published var page: Int = .zero
     @Published var shows: ShowsResponse = []
     
+    private let dispatchQueue = DispatchQueue.main
     private let repository: DashboardAPIRepositoring
     private var coordinator: (any MainCoordinatable)?
     
@@ -33,6 +34,12 @@ final class DashboardViewModel: DashboardViewModelProtocol {
         if thresholdIndex == item.id {
             page += 1
             getShows()
+        }
+    }
+    
+    func onTvShowTap(_ tvShow: TVShow) {
+        dispatchQueue.async {
+            self.coordinator?.didTapOnTvShow(tvShow)
         }
     }
     

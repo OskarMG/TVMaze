@@ -16,4 +16,9 @@ public final class TMazeViewFactory {
         let viewModel = DashboardViewModel(coordinator: coordinator)
         return DashboardView(viewModel: viewModel)
     }
+    
+    public func makeTvShowDetails(_ tvShow: TVShow, in coordinator: (any MainCoordinatable)?) -> some View {
+        debugPrint("tvShow", tvShow)
+        return EmptyView()
+    }
 }

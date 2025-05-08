@@ -9,5 +9,5 @@
 import Foundation
 
 public protocol MainCoordinatable: AnyObject, Coordinatable {
-    
+    func didTapOnTvShow(_ tvShow: TVShow)
 }

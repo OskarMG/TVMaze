@@ -13,4 +13,5 @@ protocol DashboardViewModelProtocol: AnyObject, ObservableObject {
     /// `Methods`
     func onAppear()
     func nextPage(_ item: TVShow)
+    func onTvShowTap(_ tvShow: TVShow)
 }

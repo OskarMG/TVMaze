@@ -10,6 +10,7 @@ import SwiftUI
 
 public enum MainRoute: Routable {
     case dashboard
+    case tvShowDetail(TVShow)
 }
 
 public final class MainCoordinator: MainCoordinatable {
@@ -29,12 +30,23 @@ public final class MainCoordinator: MainCoordinatable {
         switch route {
         case .dashboard:
             makeDashboard()
+        case let .tvShowDetail(tvShow):
+            makeTvShowDetails(tvShow)
         }
+    }
+    
+    /// `Navigation` methods
+    public func didTapOnTvShow(_ tvShow: TVShow){
+        push(to: .tvShowDetail(tvShow))
     }
 }
 
 extension MainCoordinator {
     func makeDashboard() -> some View {
         factory.makeDashboard(in: self)
+    }
+    
+    func makeTvShowDetails(_ tvShow: TVShow) -> some View {
+        factory.makeTvShowDetails(tvShow, in: self)
     }
 }
