@@ -3,7 +3,7 @@
 //  Common
 //
 //  Created by Oscar Martínez Germán on 8/5/25.
-//  Copyright © 2025 TMaze Demo. All rights reserved.
+//  Copyright © 2025 TVMaze Demo. All rights reserved.
 //
 
 /// A protocol that defines an interface for accessing and storing app-level user preferences.

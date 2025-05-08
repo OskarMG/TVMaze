@@ -1,0 +1,13 @@
+//
+//  Config.xcconfig
+//  TVMaze
+//
+//  Created by Oscar Martínez Germán on 8/5/25.
+//  Copyright © 2025 TVMaze Demo. All rights reserved.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://developer.apple.com/documentation/xcode/adding-a-build-configuration-file-to-your-project
+
+API_SCHEME = https
+API_BASE_URL = api.tvmaze.com
