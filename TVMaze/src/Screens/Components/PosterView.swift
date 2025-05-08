@@ -38,7 +38,7 @@ struct PosterView: View {
                         .resizable()
                         .aspectRatio(contentMode: contentMode)
                 case .failure:
-                    Image(systemName: "photo")
+                    placeholder
                 @unknown default:
                     EmptyView()
                 }
@@ -46,7 +46,15 @@ struct PosterView: View {
             .frame(width: width, height: height)
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
         } else {
-            Image(systemName: "photo")
+            placeholder
         }
+    }
+    
+    private var placeholder: some View {
+        Image(systemName: "photo")
+            .resizable()
+            .foregroundColor(.greenGray)
+            .frame(width: width, height: height)
+            .aspectRatio(contentMode: contentMode)
     }
 }

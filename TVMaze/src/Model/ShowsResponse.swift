@@ -36,19 +36,6 @@ public struct TVShow: Codable, Identifiable {
     }
 }
 
-public struct Rating: Codable {
-    let average: Double?
-}
-
-public struct Poster: Codable {
-    let medium, original: String
-}
-
-public struct Episode: Codable {
-    let href: String
-    let name: String
-}
-
 public struct Schedule: Codable {
     let time: String
     let days: [Day]

@@ -61,6 +61,9 @@ public struct NetworkService {
     ) async throws(NetworkServiceError) -> T {
         var urlRequest = endpoint.urlRequest
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        #if DEBUG
+        debugPrint("@APIEndPoint: ", urlRequest.url?.absoluteString ?? "NOT FOUND")
+        #endif
 
         do {
             let config = URLSessionConfiguration.default
@@ -70,13 +73,17 @@ public struct NetworkService {
 
             // swiftlint: disable force_https
             guard let httpResponse = response as? HTTPURLResponse else {
+                #if DEBUG
                 logger.error("❌ Invalid response received (no HTTPURLResponse)")
+                #endif
                 throw NetworkServiceError.unknown(URLError(.badServerResponse))
             }
             // swiftlint: enable force_https
 
             guard (200...299).contains(httpResponse.statusCode) else {
+                #if DEBUG
                 logger.error("❌ Backend error - status code: \(httpResponse.statusCode)")
+                #endif
                 throw NetworkServiceError.backendError(data, httpResponse.statusCode)
             }
 
@@ -93,13 +100,19 @@ public struct NetworkService {
             let decoded = try decoder.decode(T.self, from: data)
             return decoded
         } catch let decodingError as DecodingError {
+            #if DEBUG
             logger.error("❌ Decoding error: \(String(describing: decodingError))")
+            #endif
             throw NetworkServiceError.decodingError(decodingError)
         } catch let networkError as NetworkServiceError {
+            #if DEBUG
             logger.error("❌ NetworkServiceError: \(String(describing: networkError))")
+            #endif
             throw networkError
         } catch {
+            #if DEBUG
             logger.error("❌ Unknown error: \(String(describing: error))")
+            #endif
             throw NetworkServiceError.unknown(error)
         }
     }
