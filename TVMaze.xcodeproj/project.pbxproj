@@ -284,6 +284,8 @@
 /* Begin XCBuildConfiguration section */
 		CDA7C1392DCCE11B005D90DA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = CDA7C11C2DCCE11A005D90DA /* TVMaze */;
+			baseConfigurationReferenceRelativePath = Configuration/Config.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -348,6 +350,8 @@
 		};
 		CDA7C13A2DCCE11B005D90DA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = CDA7C11C2DCCE11A005D90DA /* TVMaze */;
+			baseConfigurationReferenceRelativePath = Configuration/Config.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
