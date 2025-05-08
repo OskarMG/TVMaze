@@ -26,22 +26,49 @@ struct DashboardView<ViewModel>: View where ViewModel: DashboardViewModelProtoco
             maxWidth: .infinity,
             maxHeight: .infinity
         )
+        .navigationTitle("Shows")
         .onAppear(perform: viewModel.onAppear)
     }
     
     private func setupRowFor(_ show: TVShow) -> some View {
-        HStack(spacing: .padding16) {
-            //PosterView(url: show.image?.medium)
-            Text(show.name)
-                .onAppear {
-                    viewModel.nextPage(show)
+        Button(action: {}) {
+            HStack(spacing: .padding16) {
+                PosterView(
+                    url: show.image?.medium,
+                    width: .posterWidth,
+                    height: .rowHeight
+                )
+                VStack(spacing: .zero) {
+                    Text(show.name)
+                        .bold()
+                        .foregroundColor(.primary)
+                        .multilineTextAlignment(.leading)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    HStack(spacing: .padding4) {
+                        Text("Status:")
+                            .foregroundColor(.primary)
+                        Text(show.status.rawValue)
+                            .foregroundColor(.secondary)
+                    }
+                    .multilineTextAlignment(.leading)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
+            }
+            .frame(
+                maxWidth: .infinity,
+                maxHeight: .rowHeight,
+                alignment: .leading
+            )
+            .padding(.vertical, .rowVPadding)
         }
-        .frame(maxWidth: .infinity, maxHeight: .rowHeight, alignment: .leading)
+        .onAppear { viewModel.nextPage(show) }
     }
 }
 
 private extension CGFloat {
+    static let padding4: CGFloat = 4
     static let padding16: CGFloat = 16
     static let rowHeight: CGFloat = 120
+    static let rowVPadding: CGFloat = 10
+    static let posterWidth: CGFloat = 100
 }
