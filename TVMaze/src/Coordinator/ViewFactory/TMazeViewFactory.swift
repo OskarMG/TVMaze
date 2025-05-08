@@ -1,6 +1,6 @@
 //
-//  TMazeViewFactory.swift
-//  TMaze
+//  TVMazeViewFactory.swift
+//  TVMaze
 //
 //  Created by Oscar Martínez Germán on 8/5/25.
 //  Copyright © 2025 TMaze Demo. All rights reserved.
@@ -13,6 +13,7 @@ public final class TMazeViewFactory {
     public init() {}
     
     public func makeDashboard(in coordinator: (any MainCoordinatable)?) -> some View {
-        ContentView()
+        let viewModel = DashboardViewModel(coordinator: coordinator)
+        return DashboardView(viewModel: viewModel)
     }
 }

@@ -1,6 +1,6 @@
 //
 //  MainCoordinator.swift
-//  TMaze
+//  TVMaze
 //
 //  Created by Oscar Martínez Germán on 8/5/25.
 //  Copyright © 2025 TMaze Demo. All rights reserved.
