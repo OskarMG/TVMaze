@@ -16,6 +16,7 @@ public struct TVShow: Codable, Identifiable {
     let name: String
     let image: Poster?
     let status: Status
+    let rating: Rating
     let genres: [String]
     let summary: String?
     let schedule: Schedule
@@ -27,11 +28,16 @@ public struct TVShow: Codable, Identifiable {
              name,
              type,
              image,
+             rating,
              genres,
              status,
              summary,
              schedule
     }
+}
+
+public struct Rating: Codable {
+    let average: Double?
 }
 
 public struct Poster: Codable {

@@ -18,7 +18,10 @@ public final class TMazeViewFactory {
     }
     
     public func makeTvShowDetails(_ tvShow: TVShow, in coordinator: (any MainCoordinatable)?) -> some View {
-        debugPrint("tvShow", tvShow)
-        return EmptyView()
+        let viewModel = TVShowDetailsViewModel(
+            tvShow: tvShow,
+            coordinator: coordinator
+        )
+        return TVShowDetailsView(viewModel: viewModel)
     }
 }

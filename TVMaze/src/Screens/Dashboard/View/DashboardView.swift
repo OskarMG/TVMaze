@@ -26,8 +26,9 @@ struct DashboardView<ViewModel>: View where ViewModel: DashboardViewModelProtoco
             maxWidth: .infinity,
             maxHeight: .infinity
         )
-        .navigationTitle("Shows")
+        .navigationTitle(String.title)
         .onAppear(perform: viewModel.onAppear)
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     private func setupRowFor(_ show: TVShow) -> some View {
@@ -45,7 +46,7 @@ struct DashboardView<ViewModel>: View where ViewModel: DashboardViewModelProtoco
                         .multilineTextAlignment(.leading)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     HStack(spacing: .padding4) {
-                        Text("Status:")
+                        Text(String.status)
                             .foregroundColor(.primary)
                         Text(show.status.rawValue)
                             .foregroundColor(.secondary)
@@ -71,4 +72,9 @@ private extension CGFloat {
     static let rowHeight: CGFloat = 120
     static let rowVPadding: CGFloat = 10
     static let posterWidth: CGFloat = 100
+}
+
+private extension String {
+    static let title = "TV Shows"
+    static let status = "Status:"
 }

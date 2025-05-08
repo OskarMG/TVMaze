@@ -10,9 +10,12 @@ import SwiftUI
 
 struct PosterView: View {
     private let strURL: String?
+    private let contentMode: ContentMode
     private let width, height, cornerRadius: CGFloat
     
-    init(url: String?,
+    init(
+        url: String?,
+        contentMode: ContentMode = .fill,
         cornerRadius: CGFloat = 10,
         width: CGFloat = 100,
         height: CGFloat = 100
@@ -20,6 +23,7 @@ struct PosterView: View {
         self.strURL = url
         self.width = width
         self.height = height
+        self.contentMode = contentMode
         self.cornerRadius = cornerRadius
     }
 
@@ -32,7 +36,7 @@ struct PosterView: View {
                 case .success(let image):
                     image
                         .resizable()
-                        .scaledToFill()
+                        .aspectRatio(contentMode: contentMode)
                 case .failure:
                     Image(systemName: "photo")
                 @unknown default:

@@ -13,9 +13,14 @@ final class DashboardViewModel: DashboardViewModelProtocol {
     @Published var page: Int = .zero
     @Published var shows: ShowsResponse = []
     
+    /// `itemsPerPage` must be multiple of `maxItemsPerPage`
+    /// - For exmaple: 250 % 25 = 0
+    private let itemsPerPage: Int = 10
+    private let maxItemsPerPage: Int = 250
+    private var currentPageChunkIndex = 0
     private let dispatchQueue = DispatchQueue.main
     private let repository: DashboardAPIRepositoring
-    private var coordinator: (any MainCoordinatable)?
+    private weak var coordinator: (any MainCoordinatable)?
     
     init(
         apiRepository: DashboardAPIRepositoring = DashboardAPIRepository(),
@@ -31,10 +36,7 @@ final class DashboardViewModel: DashboardViewModelProtocol {
     
     func nextPage(_ item: TVShow) {
         let thresholdIndex = shows.index(shows.endIndex, offsetBy: -1)
-        if thresholdIndex == item.id {
-            page += 1
-            getShows()
-        }
+        if thresholdIndex == item.id { getShows() }
     }
     
     func onTvShowTap(_ tvShow: TVShow) {
@@ -49,7 +51,20 @@ final class DashboardViewModel: DashboardViewModelProtocol {
             guard let self else { return }
             do {
                 let result = try await repository.getShowsBy(page: page)
-                self.shows.append(contentsOf: result)
+                
+                let start = currentPageChunkIndex * itemsPerPage
+                let end = min(start + itemsPerPage, result.count)
+                
+                guard start < end else {
+                    self.page += 1
+                    self.currentPageChunkIndex = .zero
+                    self.getShows() /// `recursively` call to fetch the next page
+                    return
+                }
+
+                let nextChunk = Array(result[start..<end])
+                self.shows.append(contentsOf: nextChunk)
+                self.currentPageChunkIndex += 1
             } catch {
               /// Handle Error || Show Error State
             }

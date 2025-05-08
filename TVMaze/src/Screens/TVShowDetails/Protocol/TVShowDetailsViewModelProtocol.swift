@@ -9,4 +9,11 @@
 import Combine
 
 protocol TVShowDetailsViewModelProtocol: AnyObject, ObservableObject {
+    var rate: String { get }
+    var tvShowName: String { get }
+    var summary: String? { get }
+    var genders: [String] { get }
+    var schedule: String { get }
+    var bannerUrl: String? { get }
+    // var seasons: [Season] { get }
 }
