@@ -74,7 +74,7 @@ struct PosterView: View {
 
     /// A default placeholder image shown when no image URL is provided or loading fails.
     private var placeholder: some View {
-        Image(systemName: "photo")
+        Image("defaultPhoto")
             .resizable()
             .foregroundColor(.greenGray)
             .frame(width: width, height: height)
