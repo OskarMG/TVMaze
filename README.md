@@ -20,8 +20,6 @@ A demo iOS application built with **SwiftUI** that integrates with the [TVMaze A
 
 ## 📸 Screenshots
 
-> Replace the image links below with your own images or GIFs from the app
-
 | App Icon | Home Dark | Home Light |
 |------|---------|--------|
 | ![app_icon](https://github.com/user-attachments/assets/1383b5ae-6b36-43f4-9121-a47a6f2f3b42) | ![list_of_shows_dark](https://github.com/user-attachments/assets/8521d116-bb9e-4d43-8ef6-39e02db9a3dc) | ![list_of_shows_light](https://github.com/user-attachments/assets/290696c6-0eb6-4e3b-80df-8721d5d54019) |
