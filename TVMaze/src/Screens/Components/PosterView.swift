@@ -8,11 +8,33 @@
 
 import SwiftUI
 
+/// A view that displays an image loaded asynchronously from a URL,
+/// with customizable size, corner radius, and content mode.
+/// Shows a placeholder on failure and a loading spinner while loading.
 struct PosterView: View {
-    private let strURL: String?
-    private let contentMode: ContentMode
-    private let width, height, cornerRadius: CGFloat
     
+    /// The URL string of the image to display.
+    private let strURL: String?
+    
+    /// The way the image should be scaled inside its frame.
+    private let contentMode: ContentMode
+    
+    /// The width of the image view.
+    private let width: CGFloat
+    
+    /// The height of the image view.
+    private let height: CGFloat
+    
+    /// The corner radius applied to the image.
+    private let cornerRadius: CGFloat
+
+    /// Creates a new `PosterView`.
+    /// - Parameters:
+    ///   - url: A string representing the image URL.
+    ///   - contentMode: How the image scales to fit its space. Defaults to `.fill`.
+    ///   - cornerRadius: The corner radius to apply. Defaults to `10`.
+    ///   - width: The width of the image. Defaults to `100`.
+    ///   - height: The height of the image. Defaults to `100`.
     init(
         url: String?,
         contentMode: ContentMode = .fill,
@@ -49,7 +71,8 @@ struct PosterView: View {
             placeholder
         }
     }
-    
+
+    /// A default placeholder image shown when no image URL is provided or loading fails.
     private var placeholder: some View {
         Image(systemName: "photo")
             .resizable()

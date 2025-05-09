@@ -60,7 +60,6 @@ struct TMSearchBar: View {
 // MARK: - Constants
 
 private extension String {
-    /// Default placeholder text shown in the search bar.
     static let placeholder = "Search..."
 }
 

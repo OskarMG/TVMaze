@@ -8,17 +8,28 @@
 
 import SwiftUI
 
+/// A banner view displaying a poster image for a TV show,
+/// with optional background styling and layout.
 struct TVShowBanner: View {
+
+    /// The optional summary of the show. Currently unused, but kept for future extensions.
     private let summary: String?
+
+    /// The optional URL string for the show's banner/poster image.
     private let bannerURL: String?
-    
+
+    /// Initializes a `TVShowBanner` view.
+    /// - Parameters:
+    ///   - summary: A brief summary or description of the show (currently unused).
+    ///   - bannerURL: The URL string for the banner image to be displayed.
     init(summary: String?, bannerURL: String?) {
         self.summary = summary
         self.bannerURL = bannerURL
     }
-    
+
     var body: some View {
         VStack(spacing: .zero) {
+            // Display the banner image
             PosterView(
                 url: bannerURL,
                 width: .posterWidth,
@@ -26,7 +37,9 @@ struct TVShowBanner: View {
             )
             .shadow(
                 color: .black.opacity(.shadowOpacity),
-                radius: .radius, x: .zero, y: .shadowY
+                radius: .radius,
+                x: .zero,
+                y: .shadowY
             )
         }
         .padding(.top, .posterTopPadding)
@@ -39,6 +52,8 @@ struct TVShowBanner: View {
         .background(.darkBanner.opacity(.colorOpacity))
     }
 }
+
+// MARK: - Constant
 
 private extension Double {
     static let colorOpacity: Double = 0.5
