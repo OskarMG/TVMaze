@@ -52,10 +52,42 @@ enum Day: String, Codable {
 }
 
 enum Status: String, Codable {
-    case ended = "Ended"
-    case running = "Running"
-    case toBeDetermined = "To Be Determined"
+    case ended
+    case running
+    case toBeDetermined
+    case none  /// Fallback for `nil` or `unknown`
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        if container.decodeNil() {
+            self = .none
+            return
+        }
+
+        let value = try container.decode(String.self)
+        switch value {
+        case "Ended": self = .ended
+        case "Running": self = .running
+        case "To Be Determined": self = .toBeDetermined
+        default: self = .none
+        }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        switch self {
+        case .ended:
+            try container.encode("Ended")
+        case .running:
+            try container.encode("Running")
+        case .toBeDetermined:
+            try container.encode("To Be Determined")
+        case .none:
+            try container.encodeNil()
+        }
+    }
 }
+
 
 enum TVShowCategory: String, Codable {
     case news = "News"
