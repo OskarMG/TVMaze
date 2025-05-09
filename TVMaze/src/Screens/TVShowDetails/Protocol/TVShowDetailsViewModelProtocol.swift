@@ -15,5 +15,5 @@ protocol TVShowDetailsViewModelProtocol: AnyObject, ObservableObject {
     var genders: [String] { get }
     var schedule: String { get }
     var bannerUrl: String? { get }
-    // var seasons: [Season] { get }
+    var episodesPerSeason: [EpisodesResponse] { get }
 }

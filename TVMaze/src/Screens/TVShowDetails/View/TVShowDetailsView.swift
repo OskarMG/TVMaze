@@ -21,7 +21,8 @@ struct TVShowDetailsView<ViewModel>: View where ViewModel: TVShowDetailsViewMode
                 summary: viewModel.summary,
                 bannerURL: viewModel.bannerUrl
             )
-            ScrollView {
+            
+            ScrollView(showsIndicators: false) {
                 Text(viewModel.summary ?? String.noApply)
                     .padding(.vertical, .padding10)
                     .foregroundColor(.secondary)
@@ -33,12 +34,15 @@ struct TVShowDetailsView<ViewModel>: View where ViewModel: TVShowDetailsViewMode
                 TVDetailRowView(row: .category, value: viewModel.genders)
                 TVDetailRowView(row: .rating, value: viewModel.rate)
                 TVDetailRowView(row: .schedule, value: viewModel.schedule)
+                    .padding(.bottom, .padding16)
+                
+                ForEach(Array(viewModel.episodesPerSeason.enumerated()), id: \.offset) { index, season in
+                    if !season.isEmpty {
+                        setupCarouselFor(name: "\(String.season) \(index+1)", season)
+                    }
+                }
             }
             .padding(.horizontal, .padding16)
-            .frame(
-                maxWidth: .infinity,
-                maxHeight: .infinity
-            )
         }
         .frame(
             maxWidth: .infinity,
@@ -46,6 +50,10 @@ struct TVShowDetailsView<ViewModel>: View where ViewModel: TVShowDetailsViewMode
         )
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(viewModel.tvShowName)
+    }
+    
+    private func setupCarouselFor(name: String,_ season: EpisodesResponse) -> some View {
+        SeasonCarousel(name: name, episodes: season)
     }
 }
 
@@ -59,5 +67,6 @@ private extension CGFloat {
 }
 
 private extension String {
+    static let season = "Season"
     static let noApply = "N/A"
 }

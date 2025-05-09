@@ -30,7 +30,7 @@ struct TVDetailRowView: View {
                 .scaledToFill()
             Text(row.label)
                 .bold()
-                .foregroundColor(.greenGray)
+                .foregroundColor(.primary)
             Spacer()
             Text(value)
         }
@@ -42,9 +42,13 @@ struct TVDetailRowView: View {
     
     private func setupDivider() -> some View {
         Rectangle()
-            .foregroundColor(.secondary)
+            .foregroundColor(.secondary.opacity(.opacity))
             .frame(height: .dividerHeight)
     }
+}
+
+private extension Double {
+    static let opacity: Double = 0.25
 }
 
 private extension CGFloat {
