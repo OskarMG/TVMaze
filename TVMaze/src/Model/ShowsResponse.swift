@@ -88,7 +88,6 @@ enum Status: String, Codable {
     }
 }
 
-
 enum TVShowCategory: String, Codable {
     case news = "News"
     case sports = "Sports"

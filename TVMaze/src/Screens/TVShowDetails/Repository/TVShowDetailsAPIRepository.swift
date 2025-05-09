@@ -10,8 +10,13 @@ import Foundation
 
 public protocol TVShowDetailsAPIRepositoring {
     /// `Methods`
-    func getSeasonsFor(tvShowId: Int) async throws(NetworkServiceError) -> SeasonResponse
     func getEpisodesFor(seasonId: Int) async throws(NetworkServiceError) -> EpisodesResponse
+    func getSeasonsFor(tvShowId: Int) async throws(NetworkServiceError) -> SeasonResponse
+    func getEpisodeFor(
+        tvShowId: Int,
+        season: Int,
+        episodeId: Int
+    ) async throws(NetworkServiceError) -> Episode
 }
 
 public final class TVShowDetailsAPIRepository: TVShowDetailsAPIRepositoring {
@@ -62,6 +67,28 @@ public final class TVShowDetailsAPIRepository: TVShowDetailsAPIRepositoring {
             let response = try await networkService.request(
                 endPoint,
                 as: EpisodesResponse.self
+            )
+            return response
+        } catch {
+            debugError(error)
+            throw error
+        }
+    }
+    
+    public func getEpisodeFor(
+        tvShowId: Int,
+        season: Int,
+        episodeId: Int
+    ) async throws(NetworkServiceError) -> Episode {
+        do throws(NetworkServiceError) {
+            let endPoint = TVShowAPIEndPoint.episodeFor(
+                showId: tvShowId,
+                season: season,
+                episode: episodeId
+            )
+            let response = try await networkService.request(
+                endPoint,
+                as: Episode.self
             )
             return response
         } catch {

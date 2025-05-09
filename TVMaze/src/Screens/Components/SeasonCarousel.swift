@@ -8,9 +8,16 @@
 
 import SwiftUI
 
+protocol SeasonCarouselDelegate: AnyObject {
+    func didSelectEpisode(_ episode: Episode)
+}
+
 /// A horizontally scrollable carousel view that displays a list of episodes as posters for a specific season.
 /// Each poster shows the episode image and overlays the episode name at the bottom.
 struct SeasonCarousel: View {
+    
+    /// Carouse Delegate
+    private weak var delegate: SeasonCarouselDelegate?
 
     /// The title or name of the season.
     private let name: String
@@ -22,9 +29,14 @@ struct SeasonCarousel: View {
     /// - Parameters:
     ///   - name: The name of the season to display above the carousel.
     ///   - episodes: The collection of episodes shown in the carousel.
-    init(name: String, episodes: EpisodesResponse) {
+    init(
+        name: String,
+        episodes: [Episode],
+        delegate: SeasonCarouselDelegate?
+    ) {
         self.name = name
         self.episodes = episodes
+        self.delegate = delegate
     }
 
     var body: some View {
@@ -50,14 +62,16 @@ struct SeasonCarousel: View {
     /// - Parameter episode: The episode to display.
     /// - Returns: A view representing the episode.
     private func setupRowFor(_ episode: Episode) -> some View {
-        PosterView(
-            url: episode.image?.medium,
-            cornerRadius: .padding16,
-            width: .posterSize,
-            height: .posterSize
-        )
-        .innerShadow(cornerRadius: .padding16)
-        .overlay(setuLabel(name: episode.name), alignment: .bottomLeading)
+        Button(action: { delegate?.didSelectEpisode(episode) }) {
+            PosterView(
+                url: episode.image?.medium,
+                cornerRadius: .padding16,
+                width: .posterSize,
+                height: .posterSize
+            )
+            .innerShadow(cornerRadius: .padding16)
+            .overlay(setuLabel(name: episode.name), alignment: .bottomLeading)
+        }
     }
 
     /// Creates a label view with the episode name, styled as a bottom overlay.

@@ -53,7 +53,7 @@ struct TVShowDetailsView<ViewModel>: View where ViewModel: TVShowDetailsViewMode
     }
     
     private func setupCarouselFor(name: String,_ season: EpisodesResponse) -> some View {
-        SeasonCarousel(name: name, episodes: season)
+        SeasonCarousel(name: name, episodes: season, delegate: viewModel)
     }
 }
 

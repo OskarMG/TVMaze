@@ -24,4 +24,8 @@ public final class TMazeViewFactory {
         )
         return TVShowDetailsView(viewModel: viewModel)
     }
+    
+    public func makeEpisodeDetails(_ episode: Episode) -> some View {
+        EpisodeBottomSheet(input: episode)
+    }
 }

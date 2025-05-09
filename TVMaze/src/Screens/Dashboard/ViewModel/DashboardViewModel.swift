@@ -43,7 +43,7 @@ final class DashboardViewModel: DashboardViewModelProtocol {
     
     func setupListeners() {
         $searchInput
-            .debounce(for: .seconds(0.2), scheduler: dispatchQueue)
+            .debounce(for: .seconds(1), scheduler: dispatchQueue)
             .removeDuplicates()
             .sink(receiveValue: onSearchFor(_:))
             .store(in: &cancellables)

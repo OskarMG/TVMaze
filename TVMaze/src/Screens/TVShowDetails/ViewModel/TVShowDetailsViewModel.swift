@@ -40,7 +40,12 @@ final class TVShowDetailsViewModel: TVShowDetailsViewModelProtocol {
         getSeasons()
     }
     
-    func getSeasons() {
+    private func onEpisodeTap(_ episode: Episode) {
+        coordinator?.didTapOn(episode)
+    }
+    
+    // MARK: - API Calls
+    private func getSeasons() {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
@@ -48,12 +53,12 @@ final class TVShowDetailsViewModel: TVShowDetailsViewModelProtocol {
                 seasons = result
                 getEpisodesForSeason()
             } catch {
-                /// Handle Error || show error State
+                // TODO: handle when could get seasons; refine with the UX Team
             }
         }
     }
     
-    func getEpisodesForSeason() {
+    private func getEpisodesForSeason() {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
@@ -62,7 +67,29 @@ final class TVShowDetailsViewModel: TVShowDetailsViewModelProtocol {
                     episodesPerSeason.append(result)
                 }
             } catch {
-                /// Handle Error || show error State
+                // TODO: handle when could get episodes; refine with the UX Team
+            }
+        }
+    }
+    
+    func didSelectEpisode(_ episode: Episode) {        
+        guard let episodeNumber = episode.number else {
+            // TODO: handle when episode number is nill (ask the backend team)
+            return
+        }
+        
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                let episode = try await repository.getEpisodeFor(
+                    tvShowId: self.tvShow.id,
+                    season: episode.season,
+                    episodeId: episodeNumber
+                )
+                
+                onEpisodeTap(episode)
+            } catch {
+                // TODO: handle when could get episode; refine with the UX Team
             }
         }
     }

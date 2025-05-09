@@ -8,7 +8,7 @@
 
 import Combine
 
-protocol TVShowDetailsViewModelProtocol: AnyObject, ObservableObject {
+protocol TVShowDetailsViewModelProtocol: AnyObject, ObservableObject, SeasonCarouselDelegate {
     var rate: String { get }
     var tvShowName: String { get }
     var summary: String? { get }

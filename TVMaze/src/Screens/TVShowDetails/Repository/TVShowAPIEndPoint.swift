@@ -12,6 +12,7 @@ public enum TVShowAPIEndPoint: APIEndPoint {
     
     case seasonsFor(tvShowId: Int)
     case episodesFor(seasonId: Int)
+    case episodeFor(showId: Int, season: Int, episode: Int)
 
     public var baseURL: URL { EnvironmentConfig.apiUrl }
     public var headers: [String : String]? { return nil }
@@ -21,6 +22,11 @@ public enum TVShowAPIEndPoint: APIEndPoint {
         switch self {
         case .seasonsFor, .episodesFor:
             return nil
+        case let .episodeFor(_, season, episode):
+            return [
+                "number": episode,
+                "season": season
+            ]
         }
     }
     
@@ -30,6 +36,8 @@ public enum TVShowAPIEndPoint: APIEndPoint {
             "shows/\(tvShowId)/seasons"
         case .episodesFor(let seasonId):
             "seasons/\(seasonId)/episodes"
+        case let .episodeFor(showId, _, _):
+            "shows/\(showId)/episodebynumber"
         }
     }
 }

@@ -1,5 +1,5 @@
 //
-//  EpisodeResponse.swift
+//  EpisodesResponse.swift
 //  TVMaze
 //
 //  Created by Oscar Martínez Germán on 8/5/25.
@@ -10,8 +10,8 @@ import Foundation
 
 public typealias EpisodesResponse = [Episode]
 
-public struct Episode: Codable {
-    let id: Int
+public struct Episode: Codable, Identifiable {
+    public let id: Int
     let url: String
     let season: Int
     let name: String
