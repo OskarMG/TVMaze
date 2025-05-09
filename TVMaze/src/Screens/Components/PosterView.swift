@@ -32,7 +32,7 @@ struct PosterView: View {
             AsyncImage(url: URL(string: strURL)) { phase in
                 switch phase {
                 case .empty:
-                    ProgressView()
+                    LoadingView()
                 case .success(let image):
                     image
                         .resizable()
