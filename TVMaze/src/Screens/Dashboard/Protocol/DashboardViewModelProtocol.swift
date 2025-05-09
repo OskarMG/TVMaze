@@ -9,9 +9,14 @@
 import Combine
 
 protocol DashboardViewModelProtocol: AnyObject, ObservableObject {
+    var isFiltering: Bool { get }
     var shows: ShowsResponse { get }
+    var searchInput: String { get set }
+    var filteredShows: ShowsResponse { get }
+    var stateView: DashboardStateView { get }
+    var showEmptyStateVisibleForFilter: Bool { get }
     /// `Methods`
-    func onAppear()
+    func onTryAgain()
     func nextPage(_ item: TVShow)
     func onTvShowTap(_ tvShow: TVShow)
 }

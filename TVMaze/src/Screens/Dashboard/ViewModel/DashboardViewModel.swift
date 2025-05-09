@@ -6,21 +6,30 @@
 //  Copyright © 2025 TVMaze Demo. All rights reserved.
 //
 
+import Combine
 import Foundation
 
+enum DashboardStateView {
+    case error
+    case loading
+    case content
+}
+
 final class DashboardViewModel: DashboardViewModelProtocol {
-    
     @Published var page: Int = .zero
+    @Published var searchInput: String = ""
     @Published var shows: ShowsResponse = []
+    @Published var filteredShows: ShowsResponse = []
+    @Published var stateView: DashboardStateView = .loading
     
-    /// `itemsPerPage` must be multiple of `maxItemsPerPage`
-    /// - For exmaple: 250 % 25 = 0
-    private let itemsPerPage: Int = 10
-    private let maxItemsPerPage: Int = 250
-    private var currentPageChunkIndex = 0
+    @Published var showEmptyStateVisibleForFilter: Bool = false
+    
     private let dispatchQueue = DispatchQueue.main
     private let repository: DashboardAPIRepositoring
+    private var cancellables = Set<AnyCancellable>()
     private weak var coordinator: (any MainCoordinatable)?
+    
+    var isFiltering: Bool { !searchInput.isEmpty }
     
     init(
         apiRepository: DashboardAPIRepositoring = DashboardAPIRepository(),
@@ -28,13 +37,25 @@ final class DashboardViewModel: DashboardViewModelProtocol {
     ) {
         self.coordinator = coordinator
         self.repository = apiRepository
-    }
-    
-    func onAppear() {
+        setupListeners()
         getShows()
     }
     
+    func setupListeners() {
+        $searchInput
+            .debounce(for: .seconds(0.2), scheduler: dispatchQueue)
+            .removeDuplicates()
+            .sink(receiveValue: onSearchFor(_:))
+            .store(in: &cancellables)
+    }
+    
+    func onSearchFor(_ newQuery: String) {
+        guard !newQuery.isEmpty else { return }
+        getShow(for: newQuery)
+    }
+    
     func nextPage(_ item: TVShow) {
+        guard !isFiltering else { return }
         let thresholdIndex = shows.index(shows.endIndex, offsetBy: -1)
         if thresholdIndex == item.id { getShows() }
     }
@@ -45,29 +66,41 @@ final class DashboardViewModel: DashboardViewModelProtocol {
         }
     }
     
+    func onTryAgain() { resetState() }
+    
     // MARK: - API Methods
     private func getShows() {
+        dispatchQueue.async { self.stateView = .loading }
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
                 let result = try await repository.getShowsBy(page: page)
-                
-                let start = currentPageChunkIndex * itemsPerPage
-                let end = min(start + itemsPerPage, result.count)
-                
-                guard start < end else {
-                    self.page += 1
-                    self.currentPageChunkIndex = .zero
-                    self.getShows() /// `recursively` call to fetch the next page
-                    return
-                }
-
-                let nextChunk = Array(result[start..<end])
-                self.shows.append(contentsOf: nextChunk)
-                self.currentPageChunkIndex += 1
+                self.shows.append(contentsOf: result)
+                self.stateView = .content
             } catch {
-              /// Handle Error || Show Error State
+                stateView = .error
             }
         }
+    }
+    
+    private func getShow(for query: String) {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                let result = try await repository.getShowsFor(query: query)
+                filteredShows = result.compactMap { $0.show }
+                stateView = .content
+                showEmptyStateVisibleForFilter = filteredShows.isEmpty
+            } catch {
+                stateView = .error
+            }
+        }
+    }
+    
+    private func resetState() {
+        page = .zero
+        searchInput = ""
+        filteredShows = []
+        getShows()
     }
 }

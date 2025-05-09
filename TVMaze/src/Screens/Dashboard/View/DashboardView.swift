@@ -16,18 +16,37 @@ struct DashboardView<ViewModel>: View where ViewModel: DashboardViewModelProtoco
     }
 
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: .zero) {
-                ForEach(viewModel.shows, content: setupRowFor(_:))
+        ZStack {
+            switch viewModel.stateView {
+            case .error:
+                EmptyStateView(
+                    icon: String.unavailable,
+                    message: String.somethingWentWrong,
+                    action: .init(label: String.tryAgain, action: viewModel.onTryAgain)
+                )
+            case .loading:
+                LoadingView(title: String.loading)
+            case .content:
+                ScrollView {
+                    LazyVStack(spacing: .padding16) {
+                        TMSearchBar(input: $viewModel.searchInput)
+                        if viewModel.isFiltering {
+                            if viewModel.showEmptyStateVisibleForFilter {
+                                EmptyStateView(icon: String.search, message: String.nomatch)
+                            } else {
+                                ForEach(viewModel.filteredShows, content: setupRowFor(_:))
+                            }
+                        } else {
+                            ForEach(viewModel.shows, content: setupRowFor(_:))
+                        }
+                        
+                    }
+                    .padding(.horizontal, .padding16)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                }
             }
-            .padding(.horizontal, .padding16)
         }
-        .frame(
-            maxWidth: .infinity,
-            maxHeight: .infinity
-        )
         .navigationTitle(String.title)
-        .onAppear(perform: viewModel.onAppear)
         .navigationBarTitleDisplayMode(.inline)
     }
     
@@ -77,4 +96,10 @@ private extension CGFloat {
 private extension String {
     static let title = "TV Shows"
     static let status = "Status:"
+    static let tryAgain = "Try again"
+    static let search = "magnifyingglass"
+    static let loading = "Loading content..."
+    static let unavailable = "exclamationmark.icloud"
+    static let somethingWentWrong = "Ups! Something went wrong..."
+    static let nomatch = "No TV shows found matching your search."
 }

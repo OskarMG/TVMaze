@@ -67,6 +67,7 @@ struct EmptyStateView: View {
             if let action {
                 Button(action: action.action) {
                     Text(action.label)
+                        .foregroundColor(tint)
                 }
             }
         }
