@@ -11,6 +11,7 @@ import Foundation
 public enum DashboardAPIEndPoint: APIEndPoint {
     
     case showsBy(page: Int)
+    case getShowsFor(String)
 
     public var baseURL: URL { EnvironmentConfig.apiUrl }
     public var headers: [String : String]? { return nil }
@@ -20,6 +21,8 @@ public enum DashboardAPIEndPoint: APIEndPoint {
         switch self {
         case let .showsBy(page):
             ["page": page]
+        case let .getShowsFor(query):
+            ["q": query]
         }
     }
     
@@ -27,6 +30,8 @@ public enum DashboardAPIEndPoint: APIEndPoint {
         switch self {
         case .showsBy:
             "shows"
+        case .getShowsFor:
+            "search/shows"
         }
     }
 }
