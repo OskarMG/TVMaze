@@ -32,5 +32,5 @@ A demo iOS application built with **SwiftUI** that integrates with the [TVMaze A
 
 1. **Clone the repository**  
    ```bash
-   git clone https://github.com/yourusername/TVMazeDemo.git
+   git clone https://github.com/OskarMG/TVMazeDemo.git
    cd TVMaze
